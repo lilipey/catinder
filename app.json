@@ -9,7 +9,9 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.khantonai.catinder",
+      "appleTeamId": "S552G86Y8D"
     },
     "android": {
       "adaptiveIcon": {
