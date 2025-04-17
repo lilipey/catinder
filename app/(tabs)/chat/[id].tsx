@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { GiftedChat, IMessage } from 'react-native-gifted-chat'
-import { StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
 
 export default function Chat() {
   const [messages, setMessages] = useState<IMessage[]>([])
@@ -38,16 +38,3 @@ export default function Chat() {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-});

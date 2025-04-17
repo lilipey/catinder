@@ -4,11 +4,8 @@ import {
   StyleSheet,
   View,
   Pressable,
-  Text,
-  type ImageSourcePropType,
 } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { AntDesign, FontAwesome6 } from '@expo/vector-icons';
+import { FontAwesome6 } from '@expo/vector-icons';
 import { Swiper, type SwiperCardRefType } from 'rn-swiper-list';
 import theme from '@/themes';
 
