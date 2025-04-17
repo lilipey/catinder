@@ -16,13 +16,6 @@ export default function TabLayout() {
         headerShown: false,
         // tabBarButton: HapticTab,
         // tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
       }}>
       <Tabs.Screen
         name="index"
@@ -39,9 +32,24 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="chat"
         options={{
-          title: 'Chat',
+          title: 'Discussions',
+          tabBarIcon: ({ color }) =>
+            <Icon
+              size={28}
+              color={color}
+              name="comments"
+              type="font-awesome-5"
+              solid={true}
+            />,
+        }}
+      />
+      <Tabs.Screen
+        name="[id]"
+        options={{
+          title: 'Discussions',
+          href: null,
           tabBarIcon: ({ color }) =>
             <Icon
               size={28}
