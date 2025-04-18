@@ -1,74 +1,221 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React, { useCallback, useRef } from 'react';
+import {
+  Image,
+  StyleSheet,
+  View,
+  Pressable,
+} from 'react-native';
+import { FontAwesome6 } from '@expo/vector-icons';
+import { Swiper, type SwiperCardRefType } from 'rn-swiper-list';
+import theme from '@/themes';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+
+const IMAGES = [
+  'https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg',
+  'https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg',
+  'https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg',
+  'https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg',
+  'https://cdn2.thecatapi.com/images/0XYvRd7oD.jpg',
+  'https://cdn2.thecatapi.com/images/ebv.jpg',
+  'https://cdn2.thecatapi.com/images/ebv.jpg',
+  'https://cdn2.thecatapi.com/images/ebv.jpg',
+  'https://cdn2.thecatapi.com/images/ebv.jpg',
+];
 
 export default function HomeScreen() {
+  const ref = useRef<SwiperCardRefType>();
+
+  const renderCard = useCallback(
+    (image: string) => {
+      return (
+        <View style={styles.renderCardContainer}>
+          <Image
+            source={{uri: image}}
+            style={styles.renderCardImage}
+            resizeMode="cover"
+          />
+        </View>
+      );
+    },
+    []
+  );
+  const OverlayLabelRight = useCallback(() => {
+    return (
+      <View
+        style={[
+          styles.overlayLabelContainer,
+          {
+            backgroundColor: theme.secondary,
+          },
+        ]}
+      ><FontAwesome6 name="heart" size={100} color="white" solid={true} /></View>
+    );
+  }, []);
+  const OverlayLabelLeft = useCallback(() => {
+    return (
+      <View
+        style={[
+          styles.overlayLabelContainer,
+          {
+            backgroundColor: theme.primary,
+          },
+        ]}
+      ><FontAwesome6 name="trash" size={100} color="white" solid={true} /></View>
+    );
+  }, []);
+  const OverlayLabelTop = useCallback(() => {
+    return (
+      <View
+        style={[
+          styles.overlayLabelContainer,
+          {
+            backgroundColor: theme.tertiary,
+          },
+        ]}
+      ><FontAwesome6 name="bolt" size={100} color="white" solid={true} /></View>
+    );
+  }, []);
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+    <>
+      <View style={styles.subContainer}>
+        <Swiper
+          ref={ref}
+          cardStyle={styles.cardStyle}
+          data={IMAGES}
+          renderCard={renderCard}
+          onIndexChange={(index) => {
+            console.log('Current Active index', index);
+          }}
+          onSwipeRight={(cardIndex) => {
+            console.log('cardIndex', cardIndex);
+          }}
+          onSwipedAll={() => {
+            console.log('onSwipedAll');
+          }}
+          onSwipeLeft={(cardIndex) => {
+            console.log('onSwipeLeft', cardIndex);
+          }}
+          onSwipeTop={(cardIndex) => {
+            console.log('onSwipeTop', cardIndex);
+          }}
+          OverlayLabelRight={OverlayLabelRight}
+          OverlayLabelLeft={OverlayLabelLeft}
+          OverlayLabelTop={OverlayLabelTop}
+          // onSwipeActive={() => {
+          //   console.log('onSwipeActive');
+          // }}
+          onSwipeStart={() => {
+            console.log('onSwipeStart');
+          }}
+        // onSwipeEnd={() => {
+        //   console.log('onSwipeEnd');
+        // }}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      </View>
+
+      <View style={styles.buttonsContainer}>
+        <Pressable
+          style={[styles.button, {backgroundColor: theme.primary}]}
+          onPress={() => {
+            ref.current?.swipeLeft();
+          }}
+        >
+          <FontAwesome6 name="trash" size={32} color="white" solid={true} />
+        </Pressable>
+        <Pressable
+          style={[styles.button, { height: 60, marginHorizontal: 10, backgroundColor: theme.quaternary }]}
+          onPress={() => {
+            ref.current?.swipeBack();
+          }}
+        >
+          <FontAwesome6 name="backward" size={24} color="white" solid={true} />
+        </Pressable>
+        <Pressable
+          style={[styles.button, {backgroundColor: theme.tertiary}]}
+          onPress={() => {
+            ref.current?.swipeTop();
+          }}
+        >
+          <FontAwesome6 name="bolt" size={32} color="white" solid={true} />
+        </Pressable>
+        <Pressable
+          style={[styles.button, {backgroundColor: theme.secondary}]}
+          onPress={() => {
+            ref.current?.swipeRight();
+          }}
+        >
+          <FontAwesome6 name="heart" size={32} color="white" solid={true} />
+        </Pressable>
+      </View>
+
+    </>
+    
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  container: {
+    flex: 1,
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    paddingBottom: 80,
+    backgroundColor: theme.appBackground,
+  },
+  buttonsContainer: {
     flexDirection: 'row',
+    bottom: 34,
     alignItems: 'center',
-    gap: 8,
+    justifyContent: 'center',
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  button: {
+    height: 80,
+    borderRadius: 40,
+    marginHorizontal: 20,
+    aspectRatio: 1,
+    backgroundColor: '#3A3D45',
+    elevation: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: 'black',
+    shadowOpacity: 0.1,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  buttonText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  cardStyle: {
+    width: '95%',
+    height: '75%',
+    borderRadius: 15,
+    marginVertical: 20,
+  },
+  renderCardContainer: {
+    flex: 1,
+    borderRadius: 15,
+    height: '75%',
+    width: '100%',
+  },
+  renderCardImage: {
+    height: '100%',
+    width: '100%',
+    borderRadius: 15,
+  },
+  subContainer: {
+    flex: 1,
+    height: '75%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  overlayLabelContainer: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
